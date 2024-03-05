@@ -74,8 +74,7 @@
 </head>
 <body>
     <div class="glitch-container">
-        <div class="glitch" id="name"> Welcome _______
-        please press enter</div>
+        <div class="glitch" id="name"> Welcome _______ please press enter</div>
     </div>
     <script>
         function startMatrix() {
@@ -87,11 +86,13 @@
             body.innerHTML = '<canvas id="matrix"></canvas>';
             const canvas = document.getElementById('matrix');
             const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
             const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             const matrixSize = 20;
-            const columns = canvas.width / matrixSize;
+            const columns = width / matrixSize;
             const drops = [];
             for (let i = 0; i < columns; i++) {
                 drops[i] = 1;
