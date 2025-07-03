@@ -1,117 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0; /* Add padding to give space for the header and paragraph */
-            overflow: hidden;
-        }
-        
-        header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 24px;
-        }
-        
-        p {
-            position: absolute;
-            top: 80px;
-            left: 20px;
-            color: white;
-            font-size: 20px; /* Adjust the font size here */
-            animation: glitch 1s infinite;
-        }
-        
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-            25% {
-                transform: translate(-2px, 2px);
-            }
-            50% {
-                transform: translate(2px, -2px);
-            }
-            75% {
-                transform: translate(-2px, 2px);
-            }
-            100% {
-                transform: translate(0);
-            }
-        }
-        
-        canvas {
-            display: block;
-            background-color: black;
-            z-index: -1; /* Push the canvas behind other elements */
-        }
-    </style>
+  <title>About Me - Matrix Style</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    header {
+      text-align: center;
+      font-size: 2em;
+      padding: 20px;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    #glitchText {
+      font-size: 1.2em;
+      text-align: center;
+      padding: 0 20px;
+      margin-bottom: 10px;
+      animation: glitch 2s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 1px 1px #0f0; }
+      20% { text-shadow: -1px -1px #0f0; }
+      40% { text-shadow: 1px -1px #0f0; }
+      60% { text-shadow: -1px 1px #0f0; }
+      80% { text-shadow: 2px 2px #0f0; }
+      100% { text-shadow: 0 0 10px #0f0; }
+    }
+
+    #matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
-    <header>About Me</header>
-    <p id="glitchText">Im Philippos Katsambas a 19 year old uni student intrestead in coding and video games. Curently im working on a game called space rock invades and its a 2d game.</p>
-    <canvas id="matrix"></canvas>
+  <header>About Me</header>
+  <p id="glitchText">
+    I'm Philippos Katsambas, a 19-year-old university student passionate about coding and video games.
+  </p>
+  <p id="glitchText">
+    Currently, I'm working on a 2D game called <strong>Space Rock Invades</strong>, blending retro charm with modern mechanics.
+  </p>
+  <p id="glitchText">
+    I love exploring game design, learning new programming languages, and pushing creative boundaries through code.
+  </p>
+  <canvas id="matrix"></canvas>
 
-    <script>
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
+  <script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
 
-        // Set canvas size to window size
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-        // Characters used for matrix effect
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const charArray = chars.split('');
+    const letters = '01';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
 
-        const fontSize = 15;
-        const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
 
-        // Array to store y positions of each character
-        const drops = [];
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Initialize y positions
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
+      ctx.fillStyle = '#0F0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
+          drops[i] = 0;
         }
 
-        function draw() {
-            // Semi-transparent black background
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drops[i]++;
+      }
+    }
 
-            // Green text
-            ctx.fillStyle = '#0F0';
-            ctx.font = `${fontSize}px arial`;
+    setInterval(drawMatrix, 33);
 
-            // Loop through columns
-            for (let i = 0; i < drops.length; i++) {
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
-
-                // Draw character at x, y
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Move y position down
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-
-                drops[i]++;
-            }
-        }
-
-        function update() {
-            draw();
-            setTimeout(update, 30); // Delay each frame by 30 milliseconds (slows down the animation)
-        }
-
-        update();
-    </script>
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
-</html>
